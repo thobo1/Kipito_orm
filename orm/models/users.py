@@ -1,5 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from ..database import Base, DEFAULT_LENGTH, RecordTimestamps
+from ..database import Base
+from ..mixins import RecordTimestamps
+from ..types import DEFAULT_LENGTH
 
 
 class User(Base, RecordTimestamps):

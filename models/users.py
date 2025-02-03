@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from orm.database import Base, DEFAULT_LENGTH, RecordTimestamps
+from ..database import Base, DEFAULT_LENGTH, RecordTimestamps
 
 
 class User(Base, RecordTimestamps):

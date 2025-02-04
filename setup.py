@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="orm-package",  # Le nom que vous utiliserez pour pip install
+    name="kipito-orm",  # Le nom que vous utiliserez pour pip install
     version="0.1.0",
     packages=find_packages(),
     install_requires=[

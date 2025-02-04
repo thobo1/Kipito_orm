@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from orm.database import Base
 from orm.mixins import RecordTimestamps
 from orm.types import DEFAULT_LENGTH
+from sqlalchemy.orm import Session
 
 
 class User(Base, RecordTimestamps):
@@ -16,3 +17,7 @@ class User(Base, RecordTimestamps):
 
     def __repr__(self):
         return f"<User(email={self.email}, is_active={self.is_active})>"
+
+    @classmethod
+    def get_by_email(cls, session: Session, email: str):
+        return session.query(cls).filter(cls.email == email).first()

@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from orm.database import Base
+from sqlalchemy.orm import Session
 
 user_themes = Table(
     "user_themes",
@@ -18,3 +19,8 @@ class Theme(Base):
     icon = Column(String)
 
     posts = relationship("Post", back_populates="theme")
+
+    @classmethod
+    def get_all_themes(cls, db: Session):
+        """Retrieve all themes from the database."""
+        return db.query(cls).all()

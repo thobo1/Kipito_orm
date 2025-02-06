@@ -1,8 +1,10 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text
 from orm.database import Base
 from orm.mixins import RecordTimestamps
 from orm.types import DEFAULT_LENGTH
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import relationship
+from .themes import user_themes
 
 
 class User(Base, RecordTimestamps):
@@ -14,10 +16,25 @@ class User(Base, RecordTimestamps):
     is_active = Column(Boolean, default=False)
     otp_code = Column(String(6), nullable=True)
     otp_valid_until = Column(DateTime, nullable=True)
+    name = Column(String(DEFAULT_LENGTH), unique=True)
+    lastname = Column(String(DEFAULT_LENGTH), unique=True)
+    bio = Column(Text, nullable=True)  # Courte biographie
+    profile_picture = Column(String, nullable=True)  # URL de la photo de profil
+    # location = Column(
+    #     String(DEFAULT_LENGTH), nullable=True
+    # )  # Localisation (ex: Barcelone, Espagne)
+    posts_count = Column(Integer, default=0)  # Nombre de posts
+    followers_count = Column(Integer, default=0)  # Nombre de followers
+    following_count = Column(Integer, default=0)  # Nombre de suivis
+    popularity_score = Column(Integer, default=0)  # Score de popularité
+
+    preferred_themes = relationship(
+        "Theme", secondary=user_themes, backref="users", lazy="dynamic"
+    )
 
     def __repr__(self):
         return f"<User(email={self.email}, is_active={self.is_active})>"
 
     @classmethod
-    def get_by_email(cls, session: Session, email: str):
-        return session.query(cls).filter(cls.email == email).first()
+    def get_by_email(cls, db: Session, email: str):
+        return db.query(cls).filter(cls.email == email).first()

@@ -1,10 +1,27 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Text,
+    ForeignKey,
+    Table,
+)
 from orm.database import Base
 from orm.mixins import RecordTimestamps
 from orm.types import DEFAULT_LENGTH
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import relationship
-from .themes import user_themes
+from .univers import user_univers
+
+
+user_followers = Table(
+    "user_followers",
+    Base.metadata,
+    Column("follower_id", Integer, ForeignKey("users.id"), primary_key=True),
+    Column("followed_id", Integer, ForeignKey("users.id"), primary_key=True),
+)
 
 
 class User(Base, RecordTimestamps):
@@ -14,6 +31,7 @@ class User(Base, RecordTimestamps):
     email = Column(String(DEFAULT_LENGTH), unique=True, nullable=False)
     hashed_password = Column(String(DEFAULT_LENGTH), nullable=False)
     is_active = Column(Boolean, default=False)
+    is_onboarding = Column(Boolean, default=False)
     otp_code = Column(String(6), nullable=True)
     otp_valid_until = Column(DateTime, nullable=True)
     name = Column(String(DEFAULT_LENGTH), unique=True)
@@ -28,8 +46,16 @@ class User(Base, RecordTimestamps):
     following_count = Column(Integer, default=0)  # Nombre de suivis
     popularity_score = Column(Integer, default=0)  # Score de popularité
 
-    preferred_themes = relationship(
-        "Theme", secondary=user_themes, backref="users", lazy="dynamic"
+    preferred_univers = relationship(
+        "Univers", secondary=user_univers, backref="users", lazy="dynamic"
+    )
+
+    followers = relationship(
+        "User",
+        secondary=user_followers,
+        primaryjoin=id == user_followers.c.followed_id,
+        secondaryjoin=id == user_followers.c.follower_id,
+        backref="following",
     )
 
     def __repr__(self):

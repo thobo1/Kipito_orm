@@ -49,7 +49,7 @@ class User(Base, RecordTimestamps):
     preferred_univers = relationship(
         "Univers", secondary=user_univers, backref="users", lazy="dynamic"
     )
-
+    posts = relationship("Post", back_populates="user")
     followers = relationship(
         "User",
         secondary=user_followers,

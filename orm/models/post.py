@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from orm.database import Base
 from orm.mixins import RecordTimestamps
 from .user_post_reaction import UserPostReaction, ReactionType
+from .comment import Comment
 from sqlalchemy.orm import Session
 
 
@@ -28,6 +29,9 @@ class Post(Base, RecordTimestamps):
     univers = relationship("Univers", back_populates="posts")
     photos = relationship("Photo", back_populates="post", cascade="all, delete-orphan")
     reactions = relationship("UserPostReaction", back_populates="post")
+    comments = relationship(
+        "Comment", back_populates="post", cascade="all, delete-orphan"
+    )
 
     def add_reaction(self, db: Session, user_id: int, reaction_type: ReactionType):
         """Ajoute un like ou un dislike pour un utilisateur donné."""

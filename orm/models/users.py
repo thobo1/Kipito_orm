@@ -50,6 +50,7 @@ class User(Base, RecordTimestamps):
         "Univers", secondary=user_univers, backref="users", lazy="dynamic"
     )
     posts = relationship("Post", back_populates="user")
+    reactions = relationship("UserPostReaction", back_populates="user")
     followers = relationship(
         "User",
         secondary=user_followers,
@@ -62,5 +63,5 @@ class User(Base, RecordTimestamps):
         return f"<User(email={self.email}, is_active={self.is_active})>"
 
     @classmethod
-    def get_by_email(cls, db: Session, email: str):
+    def get_by_email(cls, db: Session, email: str) -> "User":
         return db.query(cls).filter(cls.email == email).first()

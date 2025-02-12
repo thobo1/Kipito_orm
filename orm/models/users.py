@@ -51,6 +51,7 @@ class User(Base, RecordTimestamps):
     )
     posts = relationship("Post", back_populates="user")
     reactions = relationship("UserPostReaction", back_populates="user")
+    comments = relationship("Comment", back_populates="user")
     followers = relationship(
         "User",
         secondary=user_followers,

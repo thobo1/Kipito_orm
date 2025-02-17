@@ -19,10 +19,6 @@ class UserPostReaction(Base):
     post_id = Column(
         Integer, ForeignKey("posts.id", ondelete="CASCADE"), nullable=False
     )
-    reaction = Column(
-        Enum(ReactionType), nullable=False
-    )  # Type de réaction (like ou dislike)
-
-    # Relations
+    reaction = Column(Enum(ReactionType), nullable=False)
     user = relationship("User", back_populates="reactions")
     post = relationship("Post", back_populates="reactions")

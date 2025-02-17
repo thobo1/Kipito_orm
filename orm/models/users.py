@@ -34,8 +34,9 @@ class User(Base, RecordTimestamps):
     is_onboarding = Column(Boolean, default=False)
     otp_code = Column(String(6), nullable=True)
     otp_valid_until = Column(DateTime, nullable=True)
-    name = Column(String(DEFAULT_LENGTH), unique=True)
-    lastname = Column(String(DEFAULT_LENGTH), unique=True)
+    name = Column(String(DEFAULT_LENGTH))
+    username = Column(String(DEFAULT_LENGTH), unique=True)
+    lastname = Column(String(DEFAULT_LENGTH))
     bio = Column(Text, nullable=True)  # Courte biographie
     profile_picture = Column(String, nullable=True)  # URL de la photo de profil
     # location = Column(

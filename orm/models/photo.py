@@ -15,3 +15,12 @@ class Photo(Base):
 
     # Relation
     post = relationship("Post", back_populates="photos")
+    
+    def __init__(self, post_id, photo_url, name_on_s3=None):
+        self.post_id = post_id
+        self.photo_url = photo_url
+        if name_on_s3 is not None:
+            self.name_on_s3 = name_on_s3
+        else:
+            self.name_on_s3 = uuid.uuid4()
+

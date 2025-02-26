@@ -60,6 +60,7 @@ class User(Base, RecordTimestamps):
         secondaryjoin=id == user_followers.c.follower_id,
         backref="following",
     )
+    bookmarks = relationship("Bookmark", back_populates="user")
 
     def __repr__(self):
         return f"<User(email={self.email}, is_active={self.is_active})>"

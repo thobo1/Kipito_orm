@@ -25,6 +25,7 @@ class Post(Base, RecordTimestamps):
     likes = Column(Integer, default=0)  # Number of likes
     dislikes = Column(Integer, default=0)  # Number of dislikes
 
+    bookmarks = relationship("Bookmark", back_populates="post")
     user = relationship("User", back_populates="posts")
     univers = relationship("Univers", back_populates="posts")
     photos = relationship("Photo", back_populates="post", cascade="all, delete-orphan")

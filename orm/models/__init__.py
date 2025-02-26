@@ -4,3 +4,4 @@ from .post import Post
 from .photo import Photo
 from .user_post_reaction import UserPostReaction, ReactionType
 from .comment import Comment
+from .bookmark import Bookmark
